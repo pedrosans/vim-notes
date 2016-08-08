@@ -148,20 +148,19 @@ function! xolox#notes#edit(bang, title) abort " {{{1
   " Edit an existing note or create a new one with the :Note command.
   let starttime = xolox#misc#timer#start()
   let title = xolox#misc#str#trim(a:title)
-  if title != ''
-    let fname = xolox#notes#select(title)
-    if fname != ''
-      call xolox#misc#msg#debug("notes.vim %s: Editing existing note: %s", g:xolox#notes#version, fname)
-      execute 'edit' . a:bang fnameescape(fname)
-      if !xolox#notes#unicode_enabled() && xolox#notes#is_shadow()
-        call s:transcode_utf8_latin1()
-      endif
-      call xolox#notes#set_filetype()
-      call xolox#misc#timer#stop('notes.vim %s: Opened note in %s.', g:xolox#notes#version, starttime)
-      return
+  if title == ''
+    let title = 'Notes'
+  endif
+  let fname = xolox#notes#select(title)
+  if fname != ''
+    call xolox#misc#msg#debug("notes.vim %s: Editing existing note: %s", g:xolox#notes#version, fname)
+    execute 'edit' . a:bang fnameescape(fname)
+    if !xolox#notes#unicode_enabled() && xolox#notes#is_shadow()
+      call s:transcode_utf8_latin1()
     endif
-  else
-    let title = 'New note'
+    call xolox#notes#set_filetype()
+    call xolox#misc#timer#stop('notes.vim %s: Opened note in %s.', g:xolox#notes#version, starttime)
+    return
   endif
   " At this point we're dealing with a new note.
   let fname = xolox#notes#title_to_fname(title)
@@ -174,9 +173,7 @@ function! xolox#notes#edit(bang, title) abort " {{{1
     endif
     setlocal nomodified
   endif
-  if title != 'New note'
-    call setline(1, title)
-  endif
+  call setline(1, title)
   call xolox#notes#set_filetype()
   doautocmd BufReadPost
   call xolox#misc#timer#stop('notes.vim %s: Started new note in %s.', g:xolox#notes#version, starttime)
