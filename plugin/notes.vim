@@ -38,6 +38,7 @@ command! -bar -count=1 ShowTaggedNotes call xolox#notes#tags#show_tags(<count>)
 command! -bar IndexTaggedNotes call xolox#notes#tags#create_index()
 command! -bar NoteToMarkdown call xolox#notes#markdown#view()
 command! -bar NoteToMediawiki call xolox#notes#mediawiki#view()
+command! -bar Fold exec 'setlocal foldmethod=expr | setlocal foldexpr=xolox#notes#foldexpr() | setlocal foldtext=xolox#notes#foldtext()'
 command! -bar -nargs=? NoteToHtml call xolox#notes#html#view(<q-args>)
 
 " TODO Generalize this so we have one command + modifiers (like :tab)?
