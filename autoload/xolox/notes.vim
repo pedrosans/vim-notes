@@ -652,6 +652,10 @@ endfunction
 function! xolox#notes#buffer_is_note() " {{{2
   " Check whether the current buffer is a note (with the correct file type and path).
   let buffer_directory = expand('%:p:h')
+  let buffer_path = expand('%:p')
+  if buffer_path =~ '/.git/'
+      return 0
+  endif
   if xolox#notes#filetype_is_note(&ft)
     for directory in xolox#notes#find_directories(1)
       if xolox#misc#path#starts_with(buffer_directory, directory)
