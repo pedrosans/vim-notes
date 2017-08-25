@@ -944,7 +944,21 @@ function! xolox#notes#select_directory() " {{{3
       return buffer_directory
     endif
   endfor
-  return notes_directories[0]
+  let directory_index = 0
+  if len(notes_directories) > 1
+    " OK, a new note is being created. Ask on which directory it goes.
+    let choices = ['Please select a directory:']
+    let values = ['']
+    for directory in notes_directories
+      call add(choices, ' ' . len(choices) . ') ' . directory)
+      call add(values, directory)
+    endfor
+    let choice = inputlist(choices)
+    if choice > 0 && choice <= len(notes_directories)
+      let directory_index = choice - 1
+    endif
+  endif
+  return notes_directories[directory_index]
 endfunction
 
 function! xolox#notes#cache_add(filename, title) " {{{3
