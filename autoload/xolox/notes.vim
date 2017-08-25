@@ -649,20 +649,22 @@ function! xolox#notes#filetype_is_note(ft) " {{{2
   return index(split(a:ft, '\.'), 'notes') >= 0
 endfunction
 
-function! xolox#notes#buffer_is_note() " {{{2
-  " Check whether the current buffer is a note (with the correct file type and path).
+function! xolox#notes#buffer_in_notes_directory() " {{{2
   let buffer_directory = expand('%:p:h')
   let buffer_path = expand('%:p')
   if buffer_path =~ '/.git/'
       return 0
   endif
-  if xolox#notes#filetype_is_note(&ft)
-    for directory in xolox#notes#find_directories(1)
-      if xolox#misc#path#starts_with(buffer_directory, directory)
-        return 1
-      endif
-    endfor
-  endif
+  for directory in xolox#notes#find_directories(1)
+    if xolox#misc#path#starts_with(buffer_directory, directory)
+      return 1
+    endif
+  endfor
+endfunction
+
+function! xolox#notes#buffer_is_note() " {{{2
+  " Check whether the current buffer is a note (with the correct file type and path).
+  return xolox#notes#buffer_in_notes_directory() && xolox#notes#filetype_is_note(&ft)
 endfunction
 
 function! xolox#notes#current_title() " {{{2
@@ -1128,6 +1130,9 @@ endfunction
 
 function! xolox#notes#refresh_syntax() " {{{3
   " Update syntax highlighting of note names and code blocks.
+  if xolox#notes#buffer_in_notes_directory()
+    call xolox#notes#set_filetype()
+  endif
   if xolox#notes#filetype_is_note(&ft) && line('$') > 1
     let starttime = xolox#misc#timer#start()
     call xolox#notes#highlight_names(0)

@@ -66,15 +66,6 @@ augroup PluginNotes
   unlet s:directory
 augroup END
 
-augroup filetypedetect
-  let s:template = 'au BufNewFile,BufRead %s if &bt == "" | setl ft=notes | end'
-  for s:directory in xolox#notes#find_directories(0)
-    execute printf(s:template, xolox#notes#autocmd_pattern(s:directory, 1))
-  endfor
-  unlet s:directory
-  execute printf(s:template, xolox#notes#autocmd_pattern(g:notes_shadowdir, 0))
-augroup END
-
 " Make sure the plug-in is only loaded once.
 let g:loaded_notes = 1
 
