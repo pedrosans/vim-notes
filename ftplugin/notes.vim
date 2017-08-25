@@ -27,10 +27,12 @@ setlocal formatoptions=tcron
 let b:undo_ftplugin .= ' | set comments< formatoptions<'
 
 " Automatic text folding based on headings. {{{1
-" setlocal foldmethod=expr
-" setlocal foldexpr=xolox#notes#foldexpr()
-" setlocal foldtext=xolox#notes#foldtext()
-" let b:undo_ftplugin .= ' | set foldmethod< foldexpr< foldtext<'
+if xolox#misc#option#get('notes_text_folding', 1)
+  setlocal foldmethod=expr
+  setlocal foldexpr=xolox#notes#foldexpr()
+  setlocal foldtext=xolox#notes#foldtext()
+  let b:undo_ftplugin .= ' | set foldmethod< foldexpr< foldtext<'
+endif
 
 " Enable concealing of notes syntax markers? {{{1
 if has('conceal')
