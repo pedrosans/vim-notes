@@ -939,6 +939,9 @@ function! xolox#notes#select_directory() " {{{3
   " Pick the best suited directory for creating a new note.
   let buffer_directory = expand('%:p:h')
   let notes_directories = xolox#notes#find_directories(0)
+  if buffer_directory == g:notes_shadowdir
+    return g:notes_shadowdir
+  endif
   for directory in notes_directories
     if xolox#misc#path#starts_with(buffer_directory, directory)
       return buffer_directory
