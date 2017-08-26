@@ -1,3 +1,27 @@
+# vim-notes fork
+
+This is a fork of the vim-notes plugin with fixes an improvements:
+
+### Fixes:
+
+- Git files won't be opened as notes when the notes directory has a git repository
+- detects case insensitive file system if used on Window, so changes in the letter case won't cause the note to be deleted
+- 'Note' command can create notes nammed 'command' or 'syntax', since the command woun't load partial matches for shadow notes instead
+
+### Improvements:
+
+- notes directory can be informed when a note is being created, if multiple directories were set in g:notes_directories
+- text folding can be turned off setting `g:notes_text_folding = 0`
+
+### Installation
+
+This forked plugin depends on https://github.com/pedrosans/vim-misc and can be installed using Vundle with the `Plugin` command:
+
+```
+Plugin 'pedrosans/vim-misc'
+Plugin 'pedrosans/vim-notes'
+```
+
 # Easy note taking in Vim
 
 The vim-notes plug-in for the [Vim text editor] [vim] makes it easy to manage your notes in Vim:
